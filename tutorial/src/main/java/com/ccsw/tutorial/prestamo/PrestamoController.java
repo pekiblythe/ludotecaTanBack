@@ -85,18 +85,18 @@ public class PrestamoController {
     /**
      * Método para recuperar una lista de {@link Prestamo}
      *
-     * @param title        título del juego
-     * @param clientId     id del cliente
-     * @param datePrestamo fecha del prestamo
+     * @param game_id    id del juego
+     * @param clients_id id del cliente
+     * @param datein     fecha del prestamo
      * @return {@link List} de {@link Prestamo}
      */
     @Operation(summary = "Find", description = "Method that return a filtered list of Prestamo")
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<PrestamoDto> find(@RequestParam(value = "title", required = false) String title,
-            @RequestParam(value = "clientId", required = false) Long clientId,
-            @RequestParam(value = "datePrestamo", required = false) LocalDate datePrestamo) {
+    public List<PrestamoDto> find(@RequestParam(value = "game_id", required = false) String game_id,
+            @RequestParam(value = "clients_id", required = false) Long clients_id,
+            @RequestParam(value = "datein", required = false) LocalDate datein) {
 
-        List<Prestamo> prestamo = prestamoService.find(title, clientId, datePrestamo);
+        List<Prestamo> prestamo = prestamoService.find(game_id, clients_id, datein);
 
         return prestamo.stream().map(e -> mapper.map(e, PrestamoDto.class)).collect(Collectors.toList());
     }

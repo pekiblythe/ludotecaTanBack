@@ -57,11 +57,11 @@ public interface PrestamoService {
     /**
      * Recupera los prestamos filtrando opcionalmente por título, cliente y/o fecha
      *
-     * @param title        titulo del juego
-     * @param clientId     id del cliente
-     * @param datePrestamo fecha del prestamo
+     * @param game_id    id del juego
+     * @param clients_id id del cliente
+     * @param datein     fecha del prestamo
      * @return {@link List} de {@link Prestamo}
      */
-    List<Prestamo> find(String title, Long clientId, LocalDate datePrestamo);
+    List<Prestamo> find(String game, Long clients_id, LocalDate datein);
 
 }

@@ -106,12 +106,12 @@ public class PrestamoServiceImpl implements PrestamoService {
     }
 
     @Override
-    public List<Prestamo> find(String title, Long clientId, LocalDate datePrestamo) {
+    public List<Prestamo> find(String game_id, Long clients_id, LocalDate datein) {
 
-        PrestamoSpecification titleSpec = new PrestamoSpecification(new SearchCriteria("title", ":", title));
-        PrestamoSpecification clientIdSpec = new PrestamoSpecification(new SearchCriteria("clientId", ":", clientId));
-        PrestamoSpecification dateSpec = new PrestamoSpecification(
-                new SearchCriteria("datePrestamo", ":", datePrestamo));
+        PrestamoSpecification titleSpec = new PrestamoSpecification(new SearchCriteria("game.id", ":", game_id));
+        PrestamoSpecification clientIdSpec = new PrestamoSpecification(
+                new SearchCriteria("clients.id", ":", clients_id));
+        PrestamoSpecification dateSpec = new PrestamoSpecification(new SearchCriteria("datein", ":", datein));
 
         Specification<Prestamo> spec = Specification.where(titleSpec).and(clientIdSpec).and(dateSpec);
 
