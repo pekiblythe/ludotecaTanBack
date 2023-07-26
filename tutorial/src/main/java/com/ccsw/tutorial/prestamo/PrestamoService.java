@@ -29,7 +29,7 @@ public interface PrestamoService {
      * @param dto dto de búsqueda
      * @return {@link Page} de {@link Prestamo}
      */
-    Page<Prestamo> findPage(PrestamoSearchDto dto);
+    // Page<Prestamo> findPage(PrestamoSearchDto dto);
 
     /**
      * Método para crear o actualizar un {@link Prestamo}
@@ -52,16 +52,16 @@ public interface PrestamoService {
      *
      * @return {@link List} de {@link Prestamo}
      */
-    List<Prestamo> findAll();
+//    List<Prestamo> findAll();
 
     /**
      * Recupera los prestamos filtrando opcionalmente por título, cliente y/o fecha
      *
-     * @param game_id    id del juego
+     * @param game       id del juego
      * @param clients_id id del cliente
      * @param datein     fecha del prestamo
      * @return {@link List} de {@link Prestamo}
      */
-    List<Prestamo> find(String game, Long clients_id, LocalDate datein);
+    Page<Prestamo> findPage(String game, Long clients_id, LocalDate datein, PrestamoSearchDto dto);
 
 }

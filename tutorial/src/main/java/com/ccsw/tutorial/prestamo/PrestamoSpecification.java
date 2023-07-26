@@ -1,5 +1,7 @@
 package com.ccsw.tutorial.prestamo;
 
+import java.time.LocalDate;
+
 import org.springframework.data.jpa.domain.Specification;
 
 import com.ccsw.tutorial.common.criteria.SearchCriteria;
@@ -31,6 +33,11 @@ public class PrestamoSpecification implements Specification<Prestamo> {
             } else {
                 return builder.equal(path, criteria.getValue());
             }
+        } else if (criteria.getOperation().equalsIgnoreCase("datePrestamo") && criteria.getValue() != null) {
+            LocalDate filterDate = LocalDate.parse(criteria.getValue().toString());
+
+            return builder.and(builder.lessThanOrEqualTo(root.get("datein"), filterDate),
+                    builder.greaterThanOrEqualTo(root.get("dateout"), filterDate));
         }
         return null;
     }

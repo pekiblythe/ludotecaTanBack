@@ -1,7 +1,6 @@
 package com.ccsw.tutorial.prestamo;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,12 +46,11 @@ public class PrestamoServiceImpl implements PrestamoService {
     /**
      * {@inheritDoc}
      */
-    @Override
-    public Page<Prestamo> findPage(PrestamoSearchDto dto) {
-
-        return this.prestamoRepository.findAll(dto.getPageable().getPageable());
-    }
-
+    /*
+     * @Override public Page<Prestamo> findPage(PrestamoSearchDto dto) {
+     * 
+     * return this.prestamoRepository.findAll(dto.getPageable().getPageable()); }
+     */
     /**
      * {@inheritDoc}
      * 
@@ -76,7 +74,7 @@ public class PrestamoServiceImpl implements PrestamoService {
 
         if (dto.getDatein().isAfter(dto.getDateout())) {
             throw new Exception("La fecha de fin no puede ser anterior a la de inicio");
-        } else if ((dto.getDateout().compareTo(dto.getDatein())) < 14) {
+        } else if ((dto.getDateout().compareTo(dto.getDatein())) >= 14) {
             throw new Exception("El periodo de préstamo máximo solo puede ser de 14 días");
         } else {
             this.prestamoRepository.save(prestamo);
@@ -99,22 +97,23 @@ public class PrestamoServiceImpl implements PrestamoService {
     /**
      * {@inheritDoc}
      */
-    @Override
-    public List<Prestamo> findAll() {
+    /*
+     * @Override public List<Prestamo> findAll() {
+     * 
+     * return (List<Prestamo>) this.prestamoRepository.findAll(); }
+     */
 
-        return (List<Prestamo>) this.prestamoRepository.findAll();
-    }
-
     @Override
-    public List<Prestamo> find(String game_id, Long clients_id, LocalDate datein) {
+    public Page<Prestamo> findPage(String game_id, Long clients_id, LocalDate datein, PrestamoSearchDto dto) {
 
         PrestamoSpecification titleSpec = new PrestamoSpecification(new SearchCriteria("game.id", ":", game_id));
         PrestamoSpecification clientIdSpec = new PrestamoSpecification(
                 new SearchCriteria("clients.id", ":", clients_id));
-        PrestamoSpecification dateSpec = new PrestamoSpecification(new SearchCriteria("datein", ":", datein));
+        PrestamoSpecification dateSpec = new PrestamoSpecification(
+                new SearchCriteria("datein", "datePrestamo", datein));
 
         Specification<Prestamo> spec = Specification.where(titleSpec).and(clientIdSpec).and(dateSpec);
 
-        return this.prestamoRepository.findAll(spec);
+        return this.prestamoRepository.findAll(spec, dto.getPageable().getPageable());
     }
 }

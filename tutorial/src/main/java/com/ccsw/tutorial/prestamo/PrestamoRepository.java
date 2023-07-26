@@ -1,7 +1,5 @@
 package com.ccsw.tutorial.prestamo;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -23,10 +21,10 @@ public interface PrestamoRepository extends CrudRepository<Prestamo, Long>, JpaS
      * @param pageable pageable
      * @return {@link Page} de {@link Prestamo}
      */
-    Page<Prestamo> findAll(Pageable pageable);
+    // Page<Prestamo> findAll(Pageable pageable);
 
     @Override
     @EntityGraph(attributePaths = { "game", "clients", "datein" })
-    List<Prestamo> findAll(Specification<Prestamo> spec);
+    Page<Prestamo> findAll(Specification<Prestamo> spec, Pageable pageable);
 
 }

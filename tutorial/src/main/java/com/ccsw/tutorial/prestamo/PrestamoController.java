@@ -45,17 +45,20 @@ public class PrestamoController {
      * @param dto dto de búsqueda
      * @return {@link Page} de {@link PrestamoDto}
      */
-    @Operation(summary = "Find Page", description = "Method that return a page of Prestamos")
-    @RequestMapping(path = "", method = RequestMethod.POST)
-    public Page<PrestamoDto> findPage(@RequestBody PrestamoSearchDto dto) {
 
-        Page<Prestamo> page = this.prestamoService.findPage(dto);
-
-        return new PageImpl<>(
-                page.getContent().stream().map(e -> mapper.map(e, PrestamoDto.class)).collect(Collectors.toList()),
-                page.getPageable(), page.getTotalElements());
-    }
-
+    /*
+     * @Operation(summary = "Find Page", description =
+     * "Method that return a page of Prestamos")
+     * 
+     * @RequestMapping(path = "", method = RequestMethod.POST) public
+     * Page<PrestamoDto> findPage(@RequestBody PrestamoSearchDto dto) {
+     * 
+     * Page<Prestamo> page = this.prestamoService.findPage(dto);
+     * 
+     * return new PageImpl<>( page.getContent().stream().map(e -> mapper.map(e,
+     * PrestamoDto.class)).collect(Collectors.toList()), page.getPageable(),
+     * page.getTotalElements()); }
+     */
     /**
      * Método para crear o actualizar un {@link Prestamo}
      *
@@ -90,15 +93,28 @@ public class PrestamoController {
      * @param datein     fecha del prestamo
      * @return {@link List} de {@link Prestamo}
      */
-    @Operation(summary = "Find", description = "Method that return a filtered list of Prestamo")
-    @RequestMapping(path = "", method = RequestMethod.GET)
-    public List<PrestamoDto> find(@RequestParam(value = "game_id", required = false) String game_id,
+    @Operation(summary = "Find", description = "Method that return a filtered page of Prestamo")
+    @RequestMapping(path = "", method = RequestMethod.POST)
+    public Page<PrestamoDto> find(@RequestParam(value = "game_id", required = false) String game_id,
             @RequestParam(value = "clients_id", required = false) Long clients_id,
-            @RequestParam(value = "datein", required = false) LocalDate datein) {
+            @RequestParam(value = "datein", required = false) LocalDate datein, @RequestBody PrestamoSearchDto dto) {
 
-        List<Prestamo> prestamo = prestamoService.find(game_id, clients_id, datein);
-
-        return prestamo.stream().map(e -> mapper.map(e, PrestamoDto.class)).collect(Collectors.toList());
+        Page<Prestamo> page = this.prestamoService.findPage(game_id, clients_id, datein, dto);
+        return new PageImpl<>(
+                page.getContent().stream().map(e -> mapper.map(e, PrestamoDto.class)).collect(Collectors.toList()),
+                page.getPageable(), page.getTotalElements());
     }
-
+    /*
+     * @Operation(summary = "Find Page", description =
+     * "Method that return a page of Prestamos")
+     * 
+     * @RequestMapping(path = "", method = RequestMethod.POST) public
+     * Page<PrestamoDto> findPage(@RequestBody PrestamoSearchDto dto) {
+     * 
+     * Page<Prestamo> page = this.prestamoService.findPage(dto);
+     * 
+     * return new PageImpl<>( page.getContent().stream().map(e -> mapper.map(e,
+     * PrestamoDto.class)).collect(Collectors.toList()), page.getPageable(),
+     * page.getTotalElements());
+     */
 }
