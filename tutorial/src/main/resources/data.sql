@@ -31,4 +31,6 @@ INSERT INTO prestamo(game_id, clients_id, datein, dateout) values (1, 1, '2018-0
 INSERT INTO prestamo(game_id, clients_id, datein, dateout) values (4, 1, '2018-01-01', '2023-08-03');
 INSERT INTO prestamo(game_id, clients_id, datein, dateout) values (5, 2, '2018-01-01', '2023-08-03');
 INSERT INTO prestamo(game_id, clients_id, datein, dateout) values (7, 1, '2023-07-07', '2023-08-23');
-INSERT INTO prestamo(game_id, clients_id, datein, dateout) values (8, 4, '2023-07-01', '2023-07-15');
+INSERT INTO prestamo(game_id, clients_id, datein, dateout) values (8, 4, '2023-09-04', '2023-09-08');
+
+

@@ -68,14 +68,63 @@ public class PrestamoServiceImpl implements PrestamoService {
         }
 
         BeanUtils.copyProperties(dto, prestamo, "id", "game", "clients");
-
+        prestamo.setDatein(dto.getDatein());
+        prestamo.setDateout(dto.getDateout());
         prestamo.setGame(gameService.get(dto.getGame().getId()));
         prestamo.setClients(clientsService.get(dto.getClients().getId()));
+
+        int conflictoPrestamoNombre1 = prestamoRepository
+                .countAllByGameAndDateinGreaterThanEqualAndDateinLessThanEqualAndDateoutGreaterThanEqualAndDateoutGreaterThanEqual(
+                        prestamo.getGame(), prestamo.getDatein(), prestamo.getDateout(), prestamo.getDatein(),
+                        prestamo.getDateout());
+
+        int conflictoPrestamoNombre2 = prestamoRepository
+                .countAllByGameAndDateinLessThanEqualAndDateinLessThanEqualAndDateoutGreaterThanEqualAndDateoutLessThanEqual(
+                        prestamo.getGame(), prestamo.getDatein(), prestamo.getDateout(), prestamo.getDatein(),
+                        prestamo.getDateout());
+
+        int conflictoPrestamoNombre3 = prestamoRepository
+                .countAllByGameAndDateinLessThanEqualAndDateinLessThanEqualAndDateoutGreaterThanEqualAndDateoutGreaterThanEqual(
+                        prestamo.getGame(), prestamo.getDatein(), prestamo.getDateout(), prestamo.getDatein(),
+                        prestamo.getDateout());
+
+        int conflictoPrestamoNombre4 = prestamoRepository
+                .countAllByGameAndDateinGreaterThanEqualAndDateinLessThanEqualAndDateoutGreaterThanEqualAndDateoutLessThanEqual(
+                        prestamo.getGame(), prestamo.getDatein(), prestamo.getDateout(), prestamo.getDatein(),
+                        prestamo.getDateout());
+
+        int conflictoPrestamoClient1 = prestamoRepository
+                .countAllByClientsAndDateinGreaterThanEqualAndDateinLessThanEqualAndDateoutGreaterThanEqualAndDateoutGreaterThanEqual(
+                        prestamo.getClients(), prestamo.getDatein(), prestamo.getDateout(), prestamo.getDatein(),
+                        prestamo.getDateout());
+
+        int conflictoPrestamoClient2 = prestamoRepository
+                .countAllByClientsAndDateinLessThanEqualAndDateinLessThanEqualAndDateoutGreaterThanEqualAndDateoutLessThanEqual(
+                        prestamo.getClients(), prestamo.getDatein(), prestamo.getDateout(), prestamo.getDatein(),
+                        prestamo.getDateout());
+
+        int conflictoPrestamoClient3 = prestamoRepository
+                .countAllByClientsAndDateinLessThanEqualAndDateinLessThanEqualAndDateoutGreaterThanEqualAndDateoutGreaterThanEqual(
+                        prestamo.getClients(), prestamo.getDatein(), prestamo.getDateout(), prestamo.getDatein(),
+                        prestamo.getDateout());
+
+        int conflictoPrestamoClient4 = prestamoRepository
+                .countAllByClientsAndDateinGreaterThanEqualAndDateinLessThanEqualAndDateoutGreaterThanEqualAndDateoutLessThanEqual(
+                        prestamo.getClients(), prestamo.getDatein(), prestamo.getDateout(), prestamo.getDatein(),
+                        prestamo.getDateout());
 
         if (dto.getDatein().isAfter(dto.getDateout())) {
             throw new Exception("La fecha de fin no puede ser anterior a la de inicio");
         } else if ((dto.getDateout().compareTo(dto.getDatein())) >= 14) {
             throw new Exception("El periodo de préstamo máximo solo puede ser de 14 días");
+        } else if ((conflictoPrestamoNombre1 >= 1) || (conflictoPrestamoNombre2 >= 1) || (conflictoPrestamoNombre3 >= 1)
+                || (conflictoPrestamoNombre4 >= 1)) {
+            throw new Exception("El juego " + prestamo.getGame().getTitle()
+                    + " ya está alquilado para otra persona en la fecha indicada");
+        } else if ((conflictoPrestamoClient1 >= 1) || (conflictoPrestamoClient2 >= 1) || (conflictoPrestamoClient3 >= 1)
+                || (conflictoPrestamoClient4 >= 1)) {
+            throw new Exception(
+                    "El cliente " + prestamo.getClients().getName() + " no puede tener alquilados mas de 2 juegos");
         } else {
             this.prestamoRepository.save(prestamo);
         }

@@ -38,6 +38,9 @@ public class PrestamoSpecification implements Specification<Prestamo> {
 
             return builder.and(builder.lessThanOrEqualTo(root.get("datein"), filterDate),
                     builder.greaterThanOrEqualTo(root.get("dateout"), filterDate));
+
+        } else if (criteria.getOperation().equalsIgnoreCase("dateCheck") && criteria.getValue() != null) {
+
         }
         return null;
     }
