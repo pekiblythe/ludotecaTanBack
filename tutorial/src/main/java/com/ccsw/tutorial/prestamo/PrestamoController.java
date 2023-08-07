@@ -104,6 +104,7 @@ public class PrestamoController {
                 page.getContent().stream().map(e -> mapper.map(e, PrestamoDto.class)).collect(Collectors.toList()),
                 page.getPageable(), page.getTotalElements());
     }
+
     /*
      * @Operation(summary = "Find Page", description =
      * "Method that return a page of Prestamos")

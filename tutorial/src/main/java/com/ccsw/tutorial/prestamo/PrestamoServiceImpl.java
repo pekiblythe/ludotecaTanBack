@@ -6,7 +6,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.ccsw.tutorial.clients.ClientsService;
 import com.ccsw.tutorial.common.criteria.SearchCriteria;
@@ -114,18 +116,21 @@ public class PrestamoServiceImpl implements PrestamoService {
                         prestamo.getDateout());
 
         if (dto.getDatein().isAfter(dto.getDateout())) {
-            throw new Exception("La fecha de fin no puede ser anterior a la de inicio");
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "La fecha de fin no puede ser anterior a la de inicio");
         } else if ((dto.getDateout().compareTo(dto.getDatein())) >= 14) {
-            throw new Exception("El periodo de préstamo máximo solo puede ser de 14 días");
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "El periodo de préstamo máximo solo puede ser de 14 días");
         } else if ((conflictoPrestamoNombre1 >= 1) || (conflictoPrestamoNombre2 >= 1) || (conflictoPrestamoNombre3 >= 1)
                 || (conflictoPrestamoNombre4 >= 1)) {
-            throw new Exception("El juego " + prestamo.getGame().getTitle()
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "El juego " + prestamo.getGame().getTitle()
                     + " ya está alquilado para otra persona en la fecha indicada");
         } else if ((conflictoPrestamoClient1 >= 1) || (conflictoPrestamoClient2 >= 1) || (conflictoPrestamoClient3 >= 1)
                 || (conflictoPrestamoClient4 >= 1)) {
-            throw new Exception(
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
                     "El cliente " + prestamo.getClients().getName() + " no puede tener alquilados mas de 2 juegos");
         } else {
+            System.out.print(dto.getDateout().compareTo(dto.getDatein()));
             this.prestamoRepository.save(prestamo);
         }
     }

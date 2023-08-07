@@ -60,7 +60,7 @@ public class GameIT {
     @Test
     public void findWithoutFiltersShouldReturnAllGamesInDB() {
 
-        int GAMES_WITH_FILTER = 6;
+        int GAMES_WITH_FILTER = 8;
 
         Map<String, Object> params = new HashMap<>();
         params.put(TITLE_PARAM, null);
@@ -92,7 +92,7 @@ public class GameIT {
     @Test
     public void findExistsCategoryShouldReturnGames() {
 
-        int GAMES_WITH_FILTER = 2;
+        int GAMES_WITH_FILTER = 3;
 
         Map<String, Object> params = new HashMap<>();
         params.put(TITLE_PARAM, null);
