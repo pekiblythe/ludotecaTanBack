@@ -1,6 +1,5 @@
 package com.ccsw.tutorial.prestamo;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ccsw.tutorial.prestamo.model.Prestamo;
@@ -93,29 +91,14 @@ public class PrestamoController {
      * @param datein     fecha del prestamo
      * @return {@link List} de {@link Prestamo}
      */
-    @Operation(summary = "Find", description = "Method that return a filtered page of Prestamo")
+    @Operation(summary = "Find page", description = "Method that return a filtered page of Prestamo")
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public Page<PrestamoDto> find(@RequestParam(value = "game_id", required = false) String game_id,
-            @RequestParam(value = "clients_id", required = false) Long clients_id,
-            @RequestParam(value = "datein", required = false) LocalDate datein, @RequestBody PrestamoSearchDto dto) {
+    public Page<PrestamoDto> findPage(@RequestBody PrestamoSearchDto dto) {
 
-        Page<Prestamo> page = this.prestamoService.findPage(game_id, clients_id, datein, dto);
+        Page<Prestamo> page = prestamoService.findPage(dto);
         return new PageImpl<>(
                 page.getContent().stream().map(e -> mapper.map(e, PrestamoDto.class)).collect(Collectors.toList()),
                 page.getPageable(), page.getTotalElements());
     }
 
-    /*
-     * @Operation(summary = "Find Page", description =
-     * "Method that return a page of Prestamos")
-     * 
-     * @RequestMapping(path = "", method = RequestMethod.POST) public
-     * Page<PrestamoDto> findPage(@RequestBody PrestamoSearchDto dto) {
-     * 
-     * Page<Prestamo> page = this.prestamoService.findPage(dto);
-     * 
-     * return new PageImpl<>( page.getContent().stream().map(e -> mapper.map(e,
-     * PrestamoDto.class)).collect(Collectors.toList()), page.getPageable(),
-     * page.getTotalElements());
-     */
 }

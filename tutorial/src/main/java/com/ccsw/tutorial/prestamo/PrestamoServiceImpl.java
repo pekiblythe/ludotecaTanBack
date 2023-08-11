@@ -1,7 +1,5 @@
 package com.ccsw.tutorial.prestamo;
 
-import java.time.LocalDate;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -158,13 +156,14 @@ public class PrestamoServiceImpl implements PrestamoService {
      */
 
     @Override
-    public Page<Prestamo> findPage(String game_id, Long clients_id, LocalDate datein, PrestamoSearchDto dto) {
+    public Page<Prestamo> findPage(PrestamoSearchDto dto) {
 
-        PrestamoSpecification titleSpec = new PrestamoSpecification(new SearchCriteria("game.id", ":", game_id));
+        PrestamoSpecification titleSpec = new PrestamoSpecification(
+                new SearchCriteria("game.id", ":", dto.getGameId()));
         PrestamoSpecification clientIdSpec = new PrestamoSpecification(
-                new SearchCriteria("clients.id", ":", clients_id));
+                new SearchCriteria("clients.id", ":", dto.getClientsId()));
         PrestamoSpecification dateSpec = new PrestamoSpecification(
-                new SearchCriteria("datein", "datePrestamo", datein));
+                new SearchCriteria("datein", "datePrestamo", dto.getDatein()));
 
         Specification<Prestamo> spec = Specification.where(titleSpec).and(clientIdSpec).and(dateSpec);
 

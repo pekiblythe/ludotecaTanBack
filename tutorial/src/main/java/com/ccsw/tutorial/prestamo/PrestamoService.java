@@ -1,6 +1,5 @@
 package com.ccsw.tutorial.prestamo;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -62,6 +61,6 @@ public interface PrestamoService {
      * @param datein     fecha del prestamo
      * @return {@link List} de {@link Prestamo}
      */
-    Page<Prestamo> findPage(String game, Long clients_id, LocalDate datein, PrestamoSearchDto dto);
+    Page<Prestamo> findPage(PrestamoSearchDto dto);
 
 }
