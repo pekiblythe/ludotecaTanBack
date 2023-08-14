@@ -34,3 +34,4 @@ INSERT INTO prestamo(game_id, clients_id, datein, dateout) values (7, 1, '2023-0
 INSERT INTO prestamo(game_id, clients_id, datein, dateout) values (8, 4, '2023-09-04', '2023-09-08');
 
 
+
